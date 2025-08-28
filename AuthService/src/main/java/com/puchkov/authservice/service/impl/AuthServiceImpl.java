@@ -7,8 +7,8 @@ import com.puchkov.authservice.repository.UserRepository;
 import com.puchkov.authservice.service.AuthService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +22,9 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final Random random = new Random();
     private final KafkaTemplate<String, VerificationMessage> kafkaTemplate;
-    private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    @Value("${topic.name}")
+    String topicName;
 
 
     @Override
@@ -65,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
 
     private void sendVerificationCode(String email, String verificationCode) {
         VerificationMessage verificationMessage = new VerificationMessage(email, verificationCode);
-        kafkaTemplate.send("email-auth-event-topic", email, verificationMessage);
+        kafkaTemplate.send(topicName, email, verificationMessage);
     }
 
     private String generateVerificationCode() {
