@@ -1,0 +1,28 @@
+spring:
+  kafka:
+    admin:
+      auto-create: true
+    consumer:
+      auto-offset-reset: earliest
+      group-id: test-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            use:
+              type:
+                headers: false
+    properties:
+      spring:
+        json:
+          trusted:
+            packages: com.puchkov.authservice.dto
+jwt:
+  secret: "7d29b6033f9c381e3e75724bc41a5f53811539a079bfb933ac7886fb455170d9db5de848616f8ec1a19f841dff5d0dbeca641779de8f29a4daa4a39d2663cb8a"
+  expiration: "3600000"
+topic:
+  name: "email-auth-event-topic"

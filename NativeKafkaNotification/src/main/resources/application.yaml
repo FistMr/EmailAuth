@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: NativeKafkaNotification
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092,localhost:9094,localhost:9096
+      group-id: notification-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      auto-commit-interval: 1000ms
+      properties:
+        spring:
+          json:
+            use:
+              type:
+                headers: false
+            value:
+              default:
+                type: com.puchkov.nativekafkanotification.dto.VerificationMessage
+            trusted:
+              packages: com.puchkov.*
+server:
+  port: 0

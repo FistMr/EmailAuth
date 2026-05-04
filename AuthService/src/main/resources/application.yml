@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: AuthService
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_db
+    driver-class-name: org.postgresql.Driver
+    password: admin
+    username: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092,localhost:9094,localhost:9096
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            use:
+              type:
+                headers: false
+server:
+  port: 0
+jwt:
+  secret: "7d29b6033f9c381e3e75724bc41a5f53811539a079bfb933ac7886fb455170d9db5de848616f8ec1a19f841dff5d0dbeca641779de8f29a4daa4a39d2663cb8a"
+  expiration: "3600000"
+topic:
+  name: "email-auth-event-topic"
